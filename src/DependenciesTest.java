@@ -1,5 +1,8 @@
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 
 public class DependenciesTest {
@@ -12,7 +15,7 @@ public class DependenciesTest {
 	@Test
 	public void addAndRetrieve() { // Will all the methods with simple input?
 		Dependencies test = new Dependencies();
-		String[] testDepend = new String[] {"B"};
+		List<String> testDepend = Arrays.asList("B");
 		test.add("A",testDepend);
 		
 		assertEquals("Given 'A' is the root and 'B' is its dependency.",
@@ -22,9 +25,9 @@ public class DependenciesTest {
 	@Test
 	public void multipleRootsWithDepends(){
 		Dependencies test = new Dependencies();
-		String[] testDeps1 = new String[] {"B", "C"},
-				testDeps2 = new String[] {"D", "E"},
-				expected = new String[] {"B", "C", "D", "E"};
+		List<String> testDeps1 = Arrays.asList("B", "C"),
+				testDeps2 = Arrays.asList("D", "E"),
+				expected = Arrays.asList("B", "C", "D", "E");
 		test.add("A", testDeps1);
 		test.add("C", testDeps2);
 		
@@ -32,17 +35,17 @@ public class DependenciesTest {
 				expected, test.dependsFor("A"));
 	}
 	
-	/*@Test
+	@Test
 	public void multipleRootsWithDuplicatedDependencies(){
 		Dependencies test = new Dependencies();
-		String[] testDeps1 = new String[] {"B", "C"},
-				testDeps2 = new String[] {"C", "D"},
-				expected = new String[] {"B", "C", "D"};
+		List<String> testDeps1 = Arrays.asList("B", "C"),
+				testDeps2 = Arrays.asList("C", "D"),
+				expected = Arrays.asList("B", "C", "D");
 		test.add("A", testDeps1);
 		test.add("B", testDeps2);
 		
 		assertEquals("Given 'A' and 'B' as roots and 'B' as a dependency of 'A' and both depends on 'C'.",
 				expected, test.dependsFor("A"));
-	}*/
+	}
 
 }
