@@ -23,7 +23,9 @@ public class Dependencies {
 			if(this.data.containsKey(item)){
 				depends.addAll(dependsFor(item));
 			}
-			depends.add(item);
+			if(!depends.contains(item)){
+				depends.add(item);
+			}
 		});
 		Collections.sort(depends, String.CASE_INSENSITIVE_ORDER);
 		System.out.println(depends.toString());

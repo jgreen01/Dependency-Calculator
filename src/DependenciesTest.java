@@ -23,19 +23,6 @@ public class DependenciesTest {
 	}
 	
 	@Test
-	public void twoRootsWithDependencies(){
-		Dependencies test = new Dependencies();
-		List<String> testDeps1 = Arrays.asList("B", "C"),
-				testDeps2 = Arrays.asList("D", "E"),
-				expected = Arrays.asList("B", "C", "D", "E");
-		test.add("A", testDeps1);
-		test.add("C", testDeps2);
-		
-		assertEquals("Given 'A' and 'C' as roots and 'C' as a dependency of 'A'.",
-				expected, test.dependsFor("A"));
-	}
-	
-	@Test
 	public void twoRootsWithDuplicatedDependencies(){
 		Dependencies test = new Dependencies();
 		List<String> testDeps1 = Arrays.asList("B", "C"),
@@ -45,6 +32,19 @@ public class DependenciesTest {
 		test.add("B", testDeps2);
 		
 		assertEquals("Given 'A' and 'B' as roots and 'B' as a dependency of 'A' and both depends on 'C'.",
+				expected, test.dependsFor("A"));
+	}
+	
+	@Test
+	public void twoRootsWithDependencies(){
+		Dependencies test = new Dependencies();
+		List<String> testDeps1 = Arrays.asList("B", "C"),
+				testDeps2 = Arrays.asList("D", "E"),
+				expected = Arrays.asList("B", "C", "D", "E");
+		test.add("A", testDeps1);
+		test.add("C", testDeps2);
+		
+		assertEquals("Given 'A' and 'C' as roots and 'C' as a dependency of 'A'.",
 				expected, test.dependsFor("A"));
 	}
 	
@@ -91,9 +91,7 @@ public class DependenciesTest {
 		test.add("Z", testDeps3);
 		test.add("J", testDeps4);
 		
-		System.out.println("Output: " + test.dependsFor("A").toString());
-		System.out.println("Expect: " + expected.toString());
-		assertEquals("Given 'A' and 'C' as roots and 'C' as a dependency of 'A' and both of unordered depends.",
+		assertEquals("Given 'A', 'C', 'Z', and 'J' as roots and that 'A' depends on 'C' and 'Z' and 'J' depends on 'Z'.",
 				expected, test.dependsFor("A"));
 	}
 
