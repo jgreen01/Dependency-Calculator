@@ -16,11 +16,16 @@ public class Dependencies {
 	}
 	
 	public List<String> dependsFor(String root){
-		List<String> depends = new ArrayList((List<String>) this.data.get(root));
+		List<String> rootDependsRef = ((List<String>) this.data.get(root));
+		List<String> depends = new ArrayList(rootDependsRef);
 		
-		((List<String>) this.data.get(root)).forEach(item->{
+		rootDependsRef.forEach(item -> {
 			if(this.data.containsKey(item)){
-				depends.addAll((List<String>) this.data.get(item));
+				((List<String>) this.data.get(item)).forEach(d -> {
+					if(!depends.contains(d)){
+						depends.add(d);
+					}
+				});
 			}
 		});
 		System.out.println(depends.toString());
