@@ -17,17 +17,13 @@ public class Dependencies {
 	
 	public List<String> dependsFor(String root){
 		List<String> rootDependsRef = ((List<String>) this.data.get(root));
-		List<String> depends = new ArrayList(rootDependsRef);
+		List<String> depends = new ArrayList();
 		
 		rootDependsRef.forEach(item -> {
 			if(this.data.containsKey(item)){
-				((List<String>) this.data.get(item)).forEach(d -> {
-					System.out.println(d.toString());
-					if(!depends.contains(d)){
-						depends.add(d);
-					}
-				});
+				depends.addAll(dependsFor(item));
 			}
+			depends.add(item);
 		});
 		Collections.sort(depends, String.CASE_INSENSITIVE_ORDER);
 		System.out.println(depends.toString());

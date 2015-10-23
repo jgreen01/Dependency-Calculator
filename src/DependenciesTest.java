@@ -91,6 +91,8 @@ public class DependenciesTest {
 		test.add("Z", testDeps3);
 		test.add("J", testDeps4);
 		
+		System.out.println("Output: " + test.dependsFor("A").toString());
+		System.out.println("Expect: " + expected.toString());
 		assertEquals("Given 'A' and 'C' as roots and 'C' as a dependency of 'A' and both of unordered depends.",
 				expected, test.dependsFor("A"));
 	}
