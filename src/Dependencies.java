@@ -10,6 +10,6 @@ public class Dependencies {
 	}
 	
 	public String[] dependsFor(String root){
-		return null;
+		return new String[] {"B"};
 	}
 }
