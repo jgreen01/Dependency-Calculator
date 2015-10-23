@@ -22,13 +22,13 @@ public class Dependencies {
 		rootDependsRef.forEach(item -> {
 			if(this.data.containsKey(item)){
 				((List<String>) this.data.get(item)).forEach(d -> {
+					System.out.println(d.toString());
 					if(!depends.contains(d)){
 						depends.add(d);
 					}
 				});
 			}
 		});
-		System.out.println(depends.toString());
 		Collections.sort(depends, String.CASE_INSENSITIVE_ORDER);
 		System.out.println(depends.toString());
 		return depends;
