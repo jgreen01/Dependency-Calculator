@@ -13,7 +13,7 @@ public class DependenciesTest {
 	}
 	
 	@Test
-	public void addAndRetrieve() { // Will all the methods with simple input?
+	public void addAndRetrieve() { // Will all methods work with simple input?
 		Dependencies test = new Dependencies();
 		List<String> testDepend = Arrays.asList("B");
 		test.add("A",testDepend);
@@ -64,15 +64,15 @@ public class DependenciesTest {
 	@Test
 	public void multipleIndependentRoots(){
 		Dependencies test = new Dependencies();
-		List<String> testDeps1 = Arrays.asList("C", "Z"),
-				testDeps2 = Arrays.asList("E", "D"),
-				testDeps3 = Arrays.asList("H", "J", "X"),
-				testDeps4 = Arrays.asList("q", "w", "e", "r", "t"),
+		List<String> testDepsA = Arrays.asList("C", "Z"),
+				testDepsC = Arrays.asList("E", "D"),
+				testDepsG = Arrays.asList("H", "J", "X"),
+				testDepsO = Arrays.asList("q", "w", "e", "r", "t"),
 				expected = Arrays.asList("C", "D", "E", "Z");
-		test.add("A", testDeps1);
-		test.add("C", testDeps2);
-		test.add("G", testDeps3);
-		test.add("O", testDeps4);
+		test.add("A", testDepsA);
+		test.add("C", testDepsC);
+		test.add("G", testDepsG);
+		test.add("O", testDepsO);
 		
 		assertEquals("Given 'A' and 'C' as roots and 'C' as a dependency of 'A' and both of unordered depends.",
 				expected, test.dependsFor("A"));
@@ -81,15 +81,15 @@ public class DependenciesTest {
 	@Test
 	public void multipleDependentRoots(){
 		Dependencies test = new Dependencies();
-		List<String> testDeps1 = Arrays.asList("C", "Z"),
-				testDeps2 = Arrays.asList("E", "D"),
-				testDeps3 = Arrays.asList("H", "J", "X"),
-				testDeps4 = Arrays.asList("q", "w", "e", "r", "t"),
+		List<String> testDepsA = Arrays.asList("C", "Z"),
+				testDepsC = Arrays.asList("E", "D"),
+				testDepsZ = Arrays.asList("H", "J", "X"),
+				testDepsJ = Arrays.asList("q", "w", "e", "r", "t"),
 				expected = Arrays.asList("C", "D", "E", "e", "H", "J", "q", "r", "t", "w", "X", "Z");
-		test.add("A", testDeps1);
-		test.add("C", testDeps2);
-		test.add("Z", testDeps3);
-		test.add("J", testDeps4);
+		test.add("A", testDepsA);
+		test.add("C", testDepsC);
+		test.add("Z", testDepsZ);
+		test.add("J", testDepsJ);
 		
 		assertEquals("Given 'A', 'C', 'Z', and 'J' as roots and that 'A' depends on 'C' and 'Z' and 'J' depends on 'Z'.",
 				expected, test.dependsFor("A"));
@@ -134,6 +134,34 @@ public class DependenciesTest {
 		
 		assertEquals("Give 'A' and 'B' as roots and 'C' as a dependency.",
 				expected, test.dependsFor("Z"));
+	}
+	
+	@Test
+	public void dependsOnRootWithNoDependencies(){
+		Dependencies test = new Dependencies();
+		List<String> testDepsA = Arrays.asList(),
+				testDepsB = Arrays.asList("C", "A"),
+				expected = Arrays.asList("A", "C");
+		test.add("A", testDepsA);
+		test.add("B", testDepsB);
+		
+		assertEquals("Give 'A' and 'B' as roots where 'B' depends on 'A' and 'A' has no dependencies.",
+				expected, test.dependsFor("B"));
+	}
+	
+	@Test
+	public void multipleCircularDependencies(){
+		Dependencies test = new Dependencies();
+		List<String> testDepsA = Arrays.asList("B", "C", "D"),
+				testDepsOthers = Arrays.asList("A"),
+				expected = Arrays.asList("A", "B", "C", "D");
+		test.add("A", testDepsA);
+		test.add("B", testDepsOthers);
+		test.add("C", testDepsOthers);
+		test.add("D", testDepsOthers);
+		
+		assertEquals("Give 'A' and others as roots where 'A' depends on others and all others depend on 'A'.",
+				expected, test.dependsFor("A"));
 	}
 
 }

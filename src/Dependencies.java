@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class Dependencies {
@@ -17,7 +18,9 @@ public class Dependencies {
 	}
 	
 	public List<String> dependsFor(String root){
-		return _dependsFor(root, 1);
+		List<String> deps = _dependsFor(root, 1);
+		Collections.sort(deps, String.CASE_INSENSITIVE_ORDER);
+		return new ArrayList<String>(new LinkedHashSet<String>(deps)); // handles multiple circular dependencies by removing duplicates
 	}
 	
 	private List<String> _dependsFor(String root, int count){
@@ -37,7 +40,6 @@ public class Dependencies {
 				depends.add(item);
 			}
 		});
-		Collections.sort(depends, String.CASE_INSENSITIVE_ORDER);
 		
 		return depends;
 	}
