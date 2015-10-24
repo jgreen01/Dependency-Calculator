@@ -101,7 +101,7 @@ public class DependenciesTest {
 		List<String> testDepsA = Arrays.asList("B"),
 				testDepsB = Arrays.asList("C"),
 				testDepsC = Arrays.asList("A"),
-				expected = Arrays.asList("A", "B", "C");
+				expected = Arrays.asList("B", "C");
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		test.add("C", testDepsC);
@@ -132,8 +132,17 @@ public class DependenciesTest {
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		
-		assertEquals("Give 'A' and 'B' as roots and 'C' as a dependency.",
+		assertEquals("Give 'Z' is not a root.",
 				expected, test.dependsFor("Z"));
+	}
+	
+	@Test
+	public void noData(){
+		Dependencies test = new Dependencies();
+		List<String> expected = Arrays.asList();
+		
+		assertEquals("Give test has no roots.",
+				expected, test.dependsFor("A"));
 	}
 	
 	@Test
@@ -154,13 +163,73 @@ public class DependenciesTest {
 		Dependencies test = new Dependencies();
 		List<String> testDepsA = Arrays.asList("B", "C", "D"),
 				testDepsOthers = Arrays.asList("A"),
-				expected = Arrays.asList("A", "B", "C", "D");
+				expected = Arrays.asList("B", "C", "D");
 		test.add("A", testDepsA);
 		test.add("B", testDepsOthers);
 		test.add("C", testDepsOthers);
 		test.add("D", testDepsOthers);
 		
 		assertEquals("Give 'A' and others as roots where 'A' depends on others and all others depend on 'A'.",
+				expected, test.dependsFor("A"));
+	}
+	
+	@Test
+	public void multipleCircularDependenciesWithMultipleDependentRoots(){
+		Dependencies test = new Dependencies();
+		List<String> testDepsA = Arrays.asList("B", "C", "D"),
+				testDepsC = Arrays.asList("E", "D", "Z"),
+				testDepsZ = Arrays.asList("H", "J", "X"),
+				testDepsJ = Arrays.asList("q", "w", "e", "r", "t", "A"),
+				expected = Arrays.asList("B", "C", "D", "E", "e", "H", "J", "q", "r", "t", "w", "X", "Z");
+		test.add("A", testDepsA); // depends on C
+		test.add("C", testDepsC); // depends on Z
+		test.add("Z", testDepsZ); // depends on J
+		test.add("J", testDepsJ); // depends on A
+		
+		assertEquals("Give 'A', 'C', 'Z', and 'J' as roots where all are circularly dependent chain dependencies.",
+				expected, test.dependsFor("A"));
+	}
+	
+	@Test
+	public void complexInterdependentRoots(){
+		Dependencies test = new Dependencies();
+		List<String> testDepsA = Arrays.asList("B", "C", "D", "J", "Z"),
+				testDepsC = Arrays.asList("E", "D", "Z", "A", "J"),
+				testDepsZ = Arrays.asList("H", "J", "X", "C", "A"),
+				testDepsJ = Arrays.asList("q", "w", "e", "r", "t", "A", "C", "Z"),
+				expected = Arrays.asList("B", "C", "D", "E", "e", "H", "J", "q", "r", "t", "w", "X", "Z");
+		test.add("A", testDepsA);
+		test.add("C", testDepsC);
+		test.add("Z", testDepsZ);
+		test.add("J", testDepsJ);
+		
+		assertEquals("Give 'A', 'C', 'Z', and 'J' as roots where all depend on eachother.",
+				expected, test.dependsFor("A"));
+	}
+	
+	@Test
+	public void selfDependentRoot(){ // roots can't have themselves as dependencies
+		Dependencies test = new Dependencies();
+		List<String> testDepsA = Arrays.asList("A", "B", "C"),
+				expected = Arrays.asList("B", "C");
+		test.add("A", testDepsA);
+		
+		assertEquals("Given 'A' as a root that is dependent on itself.",
+				expected, test.dependsFor("A"));
+	}
+	
+	@Test
+	public void multipleSelfDependentAndInterdependentRoots(){
+		Dependencies test = new Dependencies();
+		List<String> testDepsA = Arrays.asList("A", "B", "C"),
+				testDepsB = Arrays.asList("A", "B", "C"),
+				testDepsC = Arrays.asList("A", "B", "C"),
+				expected = Arrays.asList("B", "C");
+		test.add("A", testDepsA);
+		test.add("B", testDepsB);
+		test.add("C", testDepsC);
+		
+		assertEquals("Given 'A', 'B', 'C' as roots that is dependent on itselves and eachother.",
 				expected, test.dependsFor("A"));
 	}
 

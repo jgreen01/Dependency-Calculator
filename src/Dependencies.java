@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 
 public class Dependencies {
@@ -18,27 +18,27 @@ public class Dependencies {
 	}
 	
 	public List<String> dependsFor(String root){
-		List<String> deps = _dependsFor(root, 1);
-		Collections.sort(deps, String.CASE_INSENSITIVE_ORDER);
-		return new ArrayList<String>(new LinkedHashSet<String>(deps)); // handles multiple circular dependencies by removing duplicates
+		HashSet<String> result = _dependsFor(root, 1);
+		result.remove(root); // roots can't have themselves as dependencies
+		List<String> depList = new ArrayList<String>(result);
+		Collections.sort(depList, String.CASE_INSENSITIVE_ORDER);
+		return depList;
 	}
 	
-	private List<String> _dependsFor(String root, int count){
-		if(count > this.data.size()) // handles circular dependencies 
-			return Arrays.asList();
+	private HashSet<String> _dependsFor(String root, int count){
+		if(count > this.data.size()) // handles runaway recursion in circular dependencies
+			return new HashSet<String>();
 		if(!this.data.containsKey(root)) // handles non-existing roots
-			return Arrays.asList();
+			return new HashSet<String>();
 		
 		List<String> rootDependsRef = ((List<String>) this.data.get(root));
-		List<String> depends = new ArrayList<String>();
+		HashSet<String> depends = new HashSet<String>();
 		
 		rootDependsRef.forEach(item -> {
 			if(this.data.containsKey(item)){
 				depends.addAll(_dependsFor(item, count+1));
 			}
-			if(!depends.contains(item)){
-				depends.add(item);
-			}
+			depends.add(item);
 		});
 		
 		return depends;
