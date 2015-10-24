@@ -3,6 +3,7 @@ import java.util.HashSet;
 
 public class Dependencies {
 	
+	private int RECURSION_LIMIT = 10473;
 	private HashMap<String,HashSet<String>> data;
 
 	public Dependencies() {
@@ -23,7 +24,7 @@ public class Dependencies {
 	}
 	
 	private HashSet<String> _dependsFor(HashSet<String> set, int count){
-		if(count > this.data.size()) // handles runaway recursion in circular dependencies
+		if(count > this.data.size() || count >= RECURSION_LIMIT) // handles runaway recursion in circular dependencies
 			return new HashSet<String>();
 		
 		HashSet<String> depends = new HashSet<String>();
