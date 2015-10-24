@@ -94,5 +94,46 @@ public class DependenciesTest {
 		assertEquals("Given 'A', 'C', 'Z', and 'J' as roots and that 'A' depends on 'C' and 'Z' and 'J' depends on 'Z'.",
 				expected, test.dependsFor("A"));
 	}
+	
+	@Test
+	public void circularDependencies(){ // Official Test
+		Dependencies test = new Dependencies();
+		List<String> testDepsA = Arrays.asList("B"),
+				testDepsB = Arrays.asList("C"),
+				testDepsC = Arrays.asList("A"),
+				expected = Arrays.asList("A", "B", "C");
+		test.add("A", testDepsA);
+		test.add("B", testDepsB);
+		test.add("C", testDepsC);
+		
+		assertEquals("Give 'A', 'B', and 'C' as roots where 'A' depends on 'B', 'B' on 'C', and 'C' on 'A'",
+				expected, test.dependsFor("A"));
+	}
+	
+	@Test
+	public void noDependencies(){
+		Dependencies test = new Dependencies();
+		List<String> testDepsA = Arrays.asList(),
+				testDepsB = Arrays.asList("C"),
+				expected = Arrays.asList();
+		test.add("A", testDepsA);
+		test.add("B", testDepsB);
+		
+		assertEquals("Give 'A' and 'B' as roots where 'A' has no dependencies.",
+				expected, test.dependsFor("A"));
+	}
+	
+	@Test
+	public void rootDoesNotExist(){
+		Dependencies test = new Dependencies();
+		List<String> testDepsA = Arrays.asList(),
+				testDepsB = Arrays.asList("C"),
+				expected = Arrays.asList();
+		test.add("A", testDepsA);
+		test.add("B", testDepsB);
+		
+		assertEquals("Give 'A' and 'B' as roots and 'C' as a dependency.",
+				expected, test.dependsFor("Z"));
+	}
 
 }
