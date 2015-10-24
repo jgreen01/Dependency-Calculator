@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,12 +16,18 @@ public class Dependencies {
 		this.data.put(root, depends);
 	}
 	
-	public List<String> dependsFor(String root){
+	public List<String> listDependsFor(String root){
 		HashSet<String> result = _dependsFor(root, 1);
 		result.remove(root); // roots can't have themselves as dependencies
 		List<String> depList = new ArrayList<String>(result);
 		Collections.sort(depList, String.CASE_INSENSITIVE_ORDER);
 		return depList;
+	}
+	
+	public HashSet<String> dependsFor(String root){
+		HashSet<String> result = _dependsFor(root, 1);
+		result.remove(root); // roots can't have themselves as dependencies
+		return result;
 	}
 	
 	private HashSet<String> _dependsFor(String root, int count){
