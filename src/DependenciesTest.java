@@ -2,7 +2,6 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -16,8 +15,8 @@ public class DependenciesTest {
 	@Test
 	public void addAndRetrieve() { // Will all methods work with simple input?
 		Dependencies test = new Dependencies();
-		HashSet<String> testDepend = new HashSet<String>(Arrays.asList("B"));
-		HashSet<String> expected = new HashSet<String>(testDepend);
+		HashSet<String> testDepend = new HashSet<String>(Arrays.asList("B")),
+				expected = new HashSet<String>(testDepend);
 		test.add("A",testDepend);
 		
 		assertEquals("Given 'A' is the root and 'B' is its dependency.",
@@ -28,8 +27,8 @@ public class DependenciesTest {
 	public void twoRootsWithDuplicatedDependencies(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDeps1 = new HashSet<String>(Arrays.asList("B", "C")),
-				testDeps2 = new HashSet<String>(Arrays.asList("C", "D"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("B", "C", "D"));
+				testDeps2 = new HashSet<String>(Arrays.asList("C", "D")),
+				expected = new HashSet<String>(Arrays.asList("B", "C", "D"));
 		test.add("A", testDeps1);
 		test.add("B", testDeps2);
 		
@@ -41,8 +40,8 @@ public class DependenciesTest {
 	public void twoRootsWithDependencies(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDeps1 = new HashSet<String>(Arrays.asList("B", "C")),
-				testDeps2 = new HashSet<String>(Arrays.asList("D", "E"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("B", "C", "D", "E"));
+				testDeps2 = new HashSet<String>(Arrays.asList("D", "E")),
+				expected = new HashSet<String>(Arrays.asList("B", "C", "D", "E"));
 		test.add("A", testDeps1);
 		test.add("C", testDeps2);
 		
@@ -56,8 +55,8 @@ public class DependenciesTest {
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("C", "Z")),
 				testDepsC = new HashSet<String>(Arrays.asList("E", "D")),
 				testDepsG = new HashSet<String>(Arrays.asList("H", "J", "X")),
-				testDepsO = new HashSet<String>(Arrays.asList("q", "w", "e", "r", "t"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("C", "D", "E", "Z"));
+				testDepsO = new HashSet<String>(Arrays.asList("q", "w", "e", "r", "t")),
+				expected = new HashSet<String>(Arrays.asList("C", "D", "E", "Z"));
 		test.add("A", testDepsA);
 		test.add("C", testDepsC);
 		test.add("G", testDepsG);
@@ -73,8 +72,8 @@ public class DependenciesTest {
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("C", "Z")),
 				testDepsC = new HashSet<String>(Arrays.asList("E", "D")),
 				testDepsZ = new HashSet<String>(Arrays.asList("H", "J", "X")),
-				testDepsJ = new HashSet<String>(Arrays.asList("q", "w", "e", "r", "t"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("C", "D", "E", "e", "H", "J", "q", "r", "t", "w", "X", "Z"));
+				testDepsJ = new HashSet<String>(Arrays.asList("q", "w", "e", "r", "t")),
+				expected = new HashSet<String>(Arrays.asList("C", "D", "E", "e", "H", "J", "q", "r", "t", "w", "X", "Z"));
 		test.add("A", testDepsA);
 		test.add("C", testDepsC);
 		test.add("Z", testDepsZ);
@@ -89,8 +88,8 @@ public class DependenciesTest {
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("B")),
 				testDepsB = new HashSet<String>(Arrays.asList("C")),
-				testDepsC = new HashSet<String>(Arrays.asList("A"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("B", "C"));
+				testDepsC = new HashSet<String>(Arrays.asList("A")),
+				expected = new HashSet<String>(Arrays.asList("B", "C"));
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		test.add("C", testDepsC);
@@ -103,8 +102,8 @@ public class DependenciesTest {
 	public void noDependencies(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList()),
-				testDepsB = new HashSet<String>(Arrays.asList("C"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList());
+				testDepsB = new HashSet<String>(Arrays.asList("C")),
+				expected = new HashSet<String>(Arrays.asList());
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		
@@ -116,8 +115,8 @@ public class DependenciesTest {
 	public void rootDoesNotExist(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList()),
-				testDepsB = new HashSet<String>(Arrays.asList("C"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList());
+				testDepsB = new HashSet<String>(Arrays.asList("C")),
+				expected = new HashSet<String>(Arrays.asList());
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		
@@ -138,8 +137,8 @@ public class DependenciesTest {
 	public void dependsOnRootWithNoDependencies(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList()),
-				testDepsB = new HashSet<String>(Arrays.asList("C", "A"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("A", "C"));
+				testDepsB = new HashSet<String>(Arrays.asList("C", "A")),
+				expected = new HashSet<String>(Arrays.asList("A", "C"));
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		
@@ -151,8 +150,8 @@ public class DependenciesTest {
 	public void multipleCircularDependencies(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("B", "C", "D")),
-				testDepsOthers = new HashSet<String>(Arrays.asList("A"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("B", "C", "D"));
+				testDepsOthers = new HashSet<String>(Arrays.asList("A")),
+				expected = new HashSet<String>(Arrays.asList("B", "C", "D"));
 		test.add("A", testDepsA);
 		test.add("B", testDepsOthers);
 		test.add("C", testDepsOthers);
@@ -168,8 +167,8 @@ public class DependenciesTest {
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("B", "C", "D")),
 				testDepsC = new HashSet<String>(Arrays.asList("E", "D", "Z")),
 				testDepsZ = new HashSet<String>(Arrays.asList("H", "J", "X")),
-				testDepsJ = new HashSet<String>(Arrays.asList("q", "w", "e", "r", "t", "A"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("B", "C", "D", "E", "e", "H", "J", "q", "r", "t", "w", "X", "Z"));
+				testDepsJ = new HashSet<String>(Arrays.asList("q", "w", "e", "r", "t", "A")),
+				expected = new HashSet<String>(Arrays.asList("B", "C", "D", "E", "e", "H", "J", "q", "r", "t", "w", "X", "Z"));
 		test.add("A", testDepsA); // depends on C
 		test.add("C", testDepsC); // depends on Z
 		test.add("Z", testDepsZ); // depends on J
@@ -185,8 +184,8 @@ public class DependenciesTest {
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("B", "C", "D", "J", "Z")),
 				testDepsC = new HashSet<String>(Arrays.asList("E", "D", "Z", "A", "J")),
 				testDepsZ = new HashSet<String>(Arrays.asList("H", "J", "X", "C", "A")),
-				testDepsJ = new HashSet<String>(Arrays.asList("q", "w", "e", "r", "t", "A", "C", "Z"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("B", "C", "D", "E", "e", "H", "J", "q", "r", "t", "w", "X", "Z"));
+				testDepsJ = new HashSet<String>(Arrays.asList("q", "w", "e", "r", "t", "A", "C", "Z")),
+				expected = new HashSet<String>(Arrays.asList("B", "C", "D", "E", "e", "H", "J", "q", "r", "t", "w", "X", "Z"));
 		test.add("A", testDepsA);
 		test.add("C", testDepsC);
 		test.add("Z", testDepsZ);
@@ -199,8 +198,8 @@ public class DependenciesTest {
 	@Test
 	public void selfDependentRoot(){ // roots can't have themselves as dependencies
 		Dependencies test = new Dependencies();
-		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("A", "B", "C"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("B", "C"));
+		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("A", "B", "C")),
+				expected = new HashSet<String>(Arrays.asList("B", "C"));
 		test.add("A", testDepsA);
 		
 		assertEquals("Given 'A' as a root that is dependent on itself.",
@@ -212,8 +211,8 @@ public class DependenciesTest {
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("A", "B", "C")),
 				testDepsB = new HashSet<String>(Arrays.asList("A", "B", "C")),
-				testDepsC = new HashSet<String>(Arrays.asList("A", "B", "C"));
-		HashSet<String> expected = new HashSet<String>(Arrays.asList("B", "C"));
+				testDepsC = new HashSet<String>(Arrays.asList("A", "B", "C")),
+				expected = new HashSet<String>(Arrays.asList("B", "C"));
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		test.add("C", testDepsC);
