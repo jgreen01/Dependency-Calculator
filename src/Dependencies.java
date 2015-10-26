@@ -19,7 +19,7 @@ public class Dependencies {
 		if(!this.data.containsKey(root)) // handles non-existing vertices
 			return new HashSet<String>();
 		
-		visited.add(root);
+		this.visited.add(root);
 		HashSet<String> result = dfs(this.data.get(root));
 		this.visited = new HashSet<>(); // clear visited set
 		
@@ -32,7 +32,7 @@ public class Dependencies {
 		HashSet<String> edgeSet = new HashSet<String>();
 		
 		nextEdges.forEach(edge -> {
-			if(visited.contains(edge)) // handles circular dependencies
+			if(this.visited.contains(edge)) // handles circular dependencies
 				return; // skips this edge
 			
 			if(this.data.containsKey(edge)){
