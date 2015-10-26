@@ -1,13 +1,14 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class Dependencies {
 	
 	private HashMap<String,HashSet<String>> data;
+	private HashSet<String> visited;
 
 	public Dependencies() {
 		this.data = new HashMap<String,HashSet<String>>();
+		this.visited = new HashSet<>();
 	}
 	
 	public void add(String vertex, HashSet<String> edges){
@@ -18,13 +19,15 @@ public class Dependencies {
 		if(!this.data.containsKey(root)) // handles non-existing vertices
 			return new HashSet<String>();
 		
-		HashSet<String> result = dfs(this.data.get(root), 
-				new HashSet<String>(Arrays.asList(root)));
+		visited.add(root);
+		HashSet<String> result = dfs(this.data.get(root));
+		this.visited = new HashSet<>(); // clear visited set
+		
 		result.remove(root); // roots can't have themselves as dependencies
 		return result;
 	}
 	
-	private HashSet<String> dfs(HashSet<String> nextEdges, HashSet<String> visited){
+	private HashSet<String> dfs(HashSet<String> nextEdges){
 		
 		HashSet<String> edgeSet = new HashSet<String>();
 		
@@ -33,8 +36,8 @@ public class Dependencies {
 				return; // skips this edge
 			
 			if(this.data.containsKey(edge)){
-				visited.add(edge);
-				edgeSet.addAll(dfs(this.data.get(edge), visited));
+				this.visited.add(edge);
+				edgeSet.addAll(dfs(this.data.get(edge)));
 			}
 			edgeSet.add(edge);
 		});
