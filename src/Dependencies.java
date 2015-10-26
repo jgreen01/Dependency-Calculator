@@ -1,41 +1,44 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class Dependencies {
 	
-	private int RECURSION_LIMIT = 10473;
 	private HashMap<String,HashSet<String>> data;
 
 	public Dependencies() {
 		this.data = new HashMap<String,HashSet<String>>();
 	}
 	
-	public void add(String root, HashSet<String> depends){
-		this.data.put(root, depends);
+	public void add(String vertex, HashSet<String> edges){
+		this.data.put(vertex, edges);
 	}
 	
 	public HashSet<String> dependsFor(String root){
-		if(!this.data.containsKey(root)) // handles non-existing roots
+		if(!this.data.containsKey(root)) // handles non-existing vertices
 			return new HashSet<String>();
 		
-		HashSet<String> result = _dependsFor(this.data.get(root), 1);
+		HashSet<String> result = dfs(this.data.get(root), 
+				new HashSet<String>(Arrays.asList(root)));
 		result.remove(root); // roots can't have themselves as dependencies
 		return result;
 	}
 	
-	private HashSet<String> _dependsFor(HashSet<String> set, int count){
-		if(count > this.data.size() || count >= RECURSION_LIMIT) // handles runaway recursion in circular dependencies
-			return new HashSet<String>();
+	private HashSet<String> dfs(HashSet<String> nextEdges, HashSet<String> visited){
 		
-		HashSet<String> depends = new HashSet<String>();
+		HashSet<String> edgeSet = new HashSet<String>();
 		
-		set.forEach(item -> {
-			if(this.data.containsKey(item)){
-				depends.addAll(_dependsFor(this.data.get(item), count+1));
+		nextEdges.forEach(edge -> {
+			if(visited.contains(edge)) // handles circular dependencies
+				return; // skips this edge
+			
+			if(this.data.containsKey(edge)){
+				visited.add(edge);
+				edgeSet.addAll(dfs(this.data.get(edge), visited));
 			}
-			depends.add(item);
+			edgeSet.add(edge);
 		});
 		
-		return depends;
+		return edgeSet;
 	}
 }

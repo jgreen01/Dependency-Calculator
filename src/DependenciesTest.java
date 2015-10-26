@@ -19,12 +19,12 @@ public class DependenciesTest {
 				expected = new HashSet<String>(testDepend);
 		test.add("A",testDepend);
 		
-		assertEquals("Given 'A' is the root and 'B' is its dependency.",
+		assertEquals("Given 'A' is the vertex and 'B' is its dependency.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void twoRootsWithDuplicatedDependencies(){
+	public void twoVerticesWithDuplicatedDependencies(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDeps1 = new HashSet<String>(Arrays.asList("B", "C")),
 				testDeps2 = new HashSet<String>(Arrays.asList("C", "D")),
@@ -32,12 +32,12 @@ public class DependenciesTest {
 		test.add("A", testDeps1);
 		test.add("B", testDeps2);
 		
-		assertEquals("Given 'A' and 'B' as roots and 'B' as a dependency of 'A' and both depends on 'C'.",
+		assertEquals("Given 'A' and 'B' as vertices and 'B' as a dependency of 'A' and both depends on 'C'.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void twoRootsWithDependencies(){
+	public void twoVerticesWithDependencies(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDeps1 = new HashSet<String>(Arrays.asList("B", "C")),
 				testDeps2 = new HashSet<String>(Arrays.asList("D", "E")),
@@ -45,12 +45,12 @@ public class DependenciesTest {
 		test.add("A", testDeps1);
 		test.add("C", testDeps2);
 		
-		assertEquals("Given 'A' and 'C' as roots and 'C' as a dependency of 'A'.",
+		assertEquals("Given 'A' and 'C' as vertices and 'C' as a dependency of 'A'.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void multipleIndependentRoots(){
+	public void multipleIndependentVertices(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("C", "Z")),
 				testDepsC = new HashSet<String>(Arrays.asList("E", "D")),
@@ -62,12 +62,12 @@ public class DependenciesTest {
 		test.add("G", testDepsG);
 		test.add("O", testDepsO);
 		
-		assertEquals("Given 'A' and 'C' as roots and 'C' as a dependency of 'A' and both of unordered depends.",
+		assertEquals("Given 'A' and 'C' as vertices and 'C' as a dependency of 'A' and both of unordered depends.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void multipleDependentRoots(){
+	public void multipleDependentVertices(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("C", "Z")),
 				testDepsC = new HashSet<String>(Arrays.asList("E", "D")),
@@ -79,7 +79,7 @@ public class DependenciesTest {
 		test.add("Z", testDepsZ);
 		test.add("J", testDepsJ);
 		
-		assertEquals("Given 'A', 'C', 'Z', and 'J' as roots and that 'A' depends on 'C' and 'Z' and 'J' depends on 'Z'.",
+		assertEquals("Given 'A', 'C', 'Z', and 'J' as vertices and that 'A' depends on 'C' and 'Z' and 'J' depends on 'Z'.",
 				expected, test.dependsFor("A"));
 	}
 	
@@ -94,7 +94,7 @@ public class DependenciesTest {
 		test.add("B", testDepsB);
 		test.add("C", testDepsC);
 		
-		assertEquals("Give 'A', 'B', and 'C' as roots where 'A' depends on 'B', 'B' on 'C', and 'C' on 'A'",
+		assertEquals("Give 'A', 'B', and 'C' as vertices where 'A' depends on 'B', 'B' on 'C', and 'C' on 'A'",
 				expected, test.dependsFor("A"));
 	}
 	
@@ -107,12 +107,12 @@ public class DependenciesTest {
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		
-		assertEquals("Give 'A' and 'B' as roots where 'A' has no dependencies.",
+		assertEquals("Give 'A' and 'B' as vertices where 'A' has no dependencies.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void rootDoesNotExist(){
+	public void vertexDoesNotExist(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList()),
 				testDepsB = new HashSet<String>(Arrays.asList("C")),
@@ -120,7 +120,7 @@ public class DependenciesTest {
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		
-		assertEquals("Give 'Z' is not a root.",
+		assertEquals("Give 'Z' is not a vertex.",
 				expected, test.dependsFor("Z"));
 	}
 	
@@ -129,12 +129,12 @@ public class DependenciesTest {
 		Dependencies test = new Dependencies();
 		HashSet<String> expected = new HashSet<String>(Arrays.asList());
 		
-		assertEquals("Give test has no roots.",
+		assertEquals("Give test has no vertices.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void dependsOnRootWithNoDependencies(){
+	public void dependsOnVertexWithNoDependencies(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList()),
 				testDepsB = new HashSet<String>(Arrays.asList("C", "A")),
@@ -142,7 +142,7 @@ public class DependenciesTest {
 		test.add("A", testDepsA);
 		test.add("B", testDepsB);
 		
-		assertEquals("Give 'A' and 'B' as roots where 'B' depends on 'A' and 'A' has no dependencies.",
+		assertEquals("Give 'A' and 'B' as vertices where 'B' depends on 'A' and 'A' has no dependencies.",
 				expected, test.dependsFor("B"));
 	}
 	
@@ -157,12 +157,12 @@ public class DependenciesTest {
 		test.add("C", testDepsOthers);
 		test.add("D", testDepsOthers);
 		
-		assertEquals("Give 'A' and others as roots where 'A' depends on others and all others depend on 'A'.",
+		assertEquals("Give 'A' and others as vertices where 'A' depends on others and all others depend on 'A'.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void multipleCircularDependenciesWithMultipleDependentRoots(){
+	public void multipleCircularDependenciesWithMultipleDependentVertices(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("B", "C", "D")),
 				testDepsC = new HashSet<String>(Arrays.asList("E", "D", "Z")),
@@ -174,12 +174,12 @@ public class DependenciesTest {
 		test.add("Z", testDepsZ); // depends on J
 		test.add("J", testDepsJ); // depends on A
 		
-		assertEquals("Give 'A', 'C', 'Z', and 'J' as roots where all are circularly dependent chain dependencies.",
+		assertEquals("Give 'A', 'C', 'Z', and 'J' as vertices where all are circularly dependent chain dependencies.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void complexInterdependentRoots(){
+	public void complexInterdependentVertices(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("B", "C", "D", "J", "Z")),
 				testDepsC = new HashSet<String>(Arrays.asList("E", "D", "Z", "A", "J")),
@@ -191,23 +191,23 @@ public class DependenciesTest {
 		test.add("Z", testDepsZ);
 		test.add("J", testDepsJ);
 		
-		assertEquals("Give 'A', 'C', 'Z', and 'J' as roots where all depend on eachother.",
+		assertEquals("Give 'A', 'C', 'Z', and 'J' as vertices where all depend on eachother.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void selfDependentRoot(){ // roots can't have themselves as dependencies
+	public void selfDependentVertex(){ // vertices can't have themselves as dependencies
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("A", "B", "C")),
 				expected = new HashSet<String>(Arrays.asList("B", "C"));
 		test.add("A", testDepsA);
 		
-		assertEquals("Given 'A' as a root that is dependent on itself.",
+		assertEquals("Given 'A' as a vertex that is dependent on itself.",
 				expected, test.dependsFor("A"));
 	}
 	
 	@Test
-	public void multipleSelfDependentAndInterdependentRoots(){
+	public void multipleSelfDependentAndInterdependentVertices(){
 		Dependencies test = new Dependencies();
 		HashSet<String> testDepsA = new HashSet<String>(Arrays.asList("A", "B", "C")),
 				testDepsB = new HashSet<String>(Arrays.asList("A", "B", "C")),
@@ -217,7 +217,7 @@ public class DependenciesTest {
 		test.add("B", testDepsB);
 		test.add("C", testDepsC);
 		
-		assertEquals("Given 'A', 'B', 'C' as roots that is dependent on itselves and eachother.",
+		assertEquals("Given 'A', 'B', 'C' as vertices that is dependent on itselves and eachother.",
 				expected, test.dependsFor("A"));
 	}
 
