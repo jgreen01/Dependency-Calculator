@@ -21,9 +21,10 @@ public class Dependencies {
 		
 		this.visited.add(root);
 		HashSet<String> result = dfs(this.data.get(root));
+
 		this.visited = new HashSet<>(); // clear visited set
-		
 		result.remove(root); // roots can't have themselves as dependencies
+
 		return result;
 	}
 	
